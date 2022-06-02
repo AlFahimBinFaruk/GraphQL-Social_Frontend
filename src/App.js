@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { MDBContainer } from "mdb-react-ui-kit";
+import "./App.css";
+import Footer from "./common_components/Footer";
+import Navbar from "./common_components/Navbar";
+import GoogleSingUp from "./pages/Auth/GoogleSingUp";
+import Home from "./pages/Home";
+import PostDetails from "./pages/PostDetails";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* navbar */}
+      <Navbar />
+      <MDBContainer className="my-5">
+        {/* google signup page */}
+        {/* <GoogleSingUp/> */}
+        {/* <Home /> */}
+        <PostDetails/>
+      </MDBContainer>
+      {/* footer */}
+      <Footer />
     </div>
   );
 }
