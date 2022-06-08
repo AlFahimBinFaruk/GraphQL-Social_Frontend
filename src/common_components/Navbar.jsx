@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBNavbar,
@@ -8,46 +8,48 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBCollapse,
-  MDBIcon
-} from 'mdb-react-ui-kit';
+  MDBIcon,
+} from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
 const Navbar = () => {
-    const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(false);
 
-    return (
-      <MDBNavbar expand='lg' light bgColor='light'>
-        <MDBContainer>
-          <MDBNavbarBrand href='#'>GraphSocial</MDBNavbarBrand>
-          <MDBNavbarToggler
-            type='button'
-            aria-expanded='false'
-            aria-label='Toggle navigation'
-            onClick={() => setShowNav(!showNav)}
-          >
-            <MDBIcon icon='bars' fas />
-          </MDBNavbarToggler>
-          <MDBCollapse navbar show={showNav}>
-            <MDBNavbarNav>
-              <MDBNavbarItem>
-                <MDBNavbarLink active aria-current='page' href='#'>
-                  Home
+  return (
+    <MDBNavbar expand="lg" light bgColor="light">
+      <MDBContainer>
+        <Link to="/">
+        <MDBNavbarBrand>GraphSocial</MDBNavbarBrand>
+        </Link>
+        <MDBNavbarToggler
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          onClick={() => setShowNav(!showNav)}
+        >
+          <MDBIcon icon="bars" fas />
+        </MDBNavbarToggler>
+        <MDBCollapse navbar show={showNav}>
+          <MDBNavbarNav className="ms-auto w-auto">
+            <MDBNavbarItem>
+              <Link to="/login">
+                <MDBNavbarLink active aria-current="page" href="#">
+                  Login
                 </MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='#'>Features</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='#'>Pricing</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                  Disabled
-                </MDBNavbarLink>
-              </MDBNavbarItem>
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
-    );
-}
+              </Link>
+            </MDBNavbarItem>
 
-export default Navbar
+            <MDBNavbarItem>
+              <Link to="/register">
+                <MDBNavbarLink active aria-current="page" href="#">
+                  Register
+                </MDBNavbarLink>
+              </Link>
+            </MDBNavbarItem>
+          </MDBNavbarNav>
+        </MDBCollapse>
+      </MDBContainer>
+    </MDBNavbar>
+  );
+};
+
+export default Navbar;

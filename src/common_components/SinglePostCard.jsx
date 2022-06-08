@@ -1,6 +1,13 @@
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
-
-const SinglePostCard = () => {
+import moment from "moment";
+const SinglePostCard = ({
+  id,
+  body,
+  user,
+  likeCount,
+  commentCount,
+  createdAt,
+}) => {
   return (
     <MDBCard className="h-100 shadow">
       <MDBCardBody>
@@ -15,7 +22,7 @@ const SinglePostCard = () => {
         <div className="post-user-info d-flex align-items-start">
           {/* profile pic */}
           <img
-            src="https://mdbootstrap.com/img/new/standard/nature/182.webp"
+            src={user?.profileURL}
             alt=""
             srcset=""
             width={40}
@@ -25,28 +32,23 @@ const SinglePostCard = () => {
           <div>
             {/* name */}
             <p className="mb-0 fw-bold text-muted">
-              <small>John Doe</small>
+              <small>{user?.username}</small>
             </p>
             {/* time */}
             <span>
-              <small>2 hours ago</small>
+              <small>{moment(Number(createdAt)).fromNow(true)}</small>
             </span>
           </div>
         </div>
         {/* post info */}
-        <h6 className="post-info text-dark mt-3">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem,
-          recusandae, totam dolorum non nihil nostrum cupiditate, perspiciatis
-          aspernatur ullam repellendus dolor iste consectetur. Fugit consequatur
-          adipisci incidunt dolorem nulla? Ut ab sed dolores.
-        </h6>
+        <h6 className="post-info text-dark mt-3">{body}</h6>
         {/* like comment manage btns */}
         <div className="d-flex justify-content-between mt-5">
           {/* like */}
           <div className="like text-center">
             {/* like count */}
             <p className="mb-1 fw-bold">
-              <small>6 Likes</small>
+              <small>{likeCount} Likes</small>
             </p>
             {/* manage like btn */}
             <MDBBtn floating color="black">
@@ -57,7 +59,7 @@ const SinglePostCard = () => {
           <div className="comment text-center">
             {/* comment count */}
             <p className="mb-1 fw-bold">
-              <small>0 comments</small>
+              <small>{commentCount} comments</small>
             </p>
             {/* manage comment btnmanage  */}
             <MDBBtn floating color="warning">
