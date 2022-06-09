@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import firebase from "./firebase/config";
 import {
   ApolloClient,
   InMemoryCache,
@@ -12,6 +13,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import { AppAlertProvider } from "./contexts/alertContext";
+import { UserAuthProvider } from "./contexts/userContext";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -23,7 +25,9 @@ root.render(
   <React.StrictMode>
     <AppAlertProvider>
       <ApolloProvider client={client}>
-        <App />
+        <UserAuthProvider>
+          <App />
+        </UserAuthProvider>
       </ApolloProvider>
     </AppAlertProvider>
   </React.StrictMode>
