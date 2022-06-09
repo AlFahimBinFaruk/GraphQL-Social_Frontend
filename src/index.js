@@ -5,9 +5,9 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useQuery,
-  gql,
+  createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -15,8 +15,22 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import { AppAlertProvider } from "./contexts/alertContext";
 import { UserAuthProvider } from "./contexts/userContext";
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: "http://localhost:5000/graphql",
+});
+
+const authLink = setContext(() => {
+  let userInfo = JSON.parse(localStorage.getItem("user"));
+  const token = userInfo.token;
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

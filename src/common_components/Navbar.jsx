@@ -11,14 +11,16 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
+import { useGlobalUserContext } from "../contexts/userContext";
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false);
-
+  let { user } = useGlobalUserContext();
+ 
   return (
     <MDBNavbar expand="lg" light bgColor="light">
       <MDBContainer>
         <Link to="/">
-        <MDBNavbarBrand>GraphSocial</MDBNavbarBrand>
+          <MDBNavbarBrand>GraphSocial</MDBNavbarBrand>
         </Link>
         <MDBNavbarToggler
           type="button"
@@ -30,21 +32,33 @@ const Navbar = () => {
         </MDBNavbarToggler>
         <MDBCollapse navbar show={showNav}>
           <MDBNavbarNav className="ms-auto w-auto">
-            <MDBNavbarItem>
-              <Link to="/login">
-                <MDBNavbarLink active aria-current="page" href="#">
-                  Login
-                </MDBNavbarLink>
-              </Link>
-            </MDBNavbarItem>
-
-            <MDBNavbarItem>
-              <Link to="/register">
-                <MDBNavbarLink active aria-current="page" href="#">
-                  Register
-                </MDBNavbarLink>
-              </Link>
-            </MDBNavbarItem>
+            {!user ? (
+              <>
+                {" "}
+                <MDBNavbarItem>
+                  <Link to="/login">
+                    <MDBNavbarLink active aria-current="page" href="#">
+                      Login
+                    </MDBNavbarLink>
+                  </Link>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <Link to="/register">
+                    <MDBNavbarLink active aria-current="page" href="#">
+                      Register
+                    </MDBNavbarLink>
+                  </Link>
+                </MDBNavbarItem>
+              </>
+            ) : (
+              <MDBNavbarItem>
+                <Link to="/account">
+                  <MDBNavbarLink active aria-current="page" href="#">
+                    My Account
+                  </MDBNavbarLink>
+                </Link>
+              </MDBNavbarItem>
+            )}
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBContainer>

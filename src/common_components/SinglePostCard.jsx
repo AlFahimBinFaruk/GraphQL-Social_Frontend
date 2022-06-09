@@ -1,5 +1,6 @@
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 const SinglePostCard = ({
   id,
   body,
@@ -8,6 +9,7 @@ const SinglePostCard = ({
   commentCount,
   createdAt,
 }) => {
+  let navigate = useNavigate();
   return (
     <MDBCard className="h-100 shadow">
       <MDBCardBody>
@@ -41,7 +43,13 @@ const SinglePostCard = ({
           </div>
         </div>
         {/* post info */}
-        <h6 className="post-info text-dark mt-3">{body}</h6>
+        <h6
+          className="post-info text-dark mt-3"
+          onClick={() => navigate(`/${id}`)}
+          role="button"
+        >
+          {body}
+        </h6>
         {/* like comment manage btns */}
         <div className="d-flex justify-content-between mt-5">
           {/* like */}
@@ -62,7 +70,7 @@ const SinglePostCard = ({
               <small>{commentCount} comments</small>
             </p>
             {/* manage comment btnmanage  */}
-            <MDBBtn floating color="warning">
+            <MDBBtn floating color="warning" onClick={() => navigate(`/${id}`)}>
               <MDBIcon far icon="comments" />
             </MDBBtn>
           </div>

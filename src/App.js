@@ -4,12 +4,13 @@ import "./App.css";
 import Alert from "./common_components/Alert";
 import Footer from "./common_components/Footer";
 import Navbar from "./common_components/Navbar";
-
 import Login from "./pages/Auth/Login";
 import MyAccount from "./pages/Auth/MyAccount";
 import Register from "./pages/Auth/Register";
 import Home from "./pages/Home";
 import PostDetails from "./pages/PostDetails";
+import IsLoggedIn from "./utils/isLoggedIn";
+import RequireAuth from "./utils/requireAuth";
 
 function App() {
   return (
@@ -22,10 +23,38 @@ function App() {
           <Alert />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:id" element={<PostDetails />} />
-            <Route path="/account" element={<MyAccount/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
+            <Route
+              path="/:id"
+              element={
+                <RequireAuth>
+                  <PostDetails />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <RequireAuth>
+                  <MyAccount />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <IsLoggedIn>
+                  <Login />
+                </IsLoggedIn>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <IsLoggedIn>
+                  <Register />
+                </IsLoggedIn>
+              }
+            />
           </Routes>
         </MDBContainer>
       </BrowserRouter>

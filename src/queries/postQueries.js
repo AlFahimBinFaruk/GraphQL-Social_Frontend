@@ -4,15 +4,15 @@ const GET_POSTS = gql`
   getPosts(pageNo: $pageNo) {
     posts {
       body
+      likeCount
+      commentCount
+      createdAt
+      id
       user {
         id
         username
         profileURL
       }
-      likeCount
-      commentCount
-      createdAt
-      id
     }
     totalPostCount
   }

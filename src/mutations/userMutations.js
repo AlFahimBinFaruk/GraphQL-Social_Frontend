@@ -11,4 +11,16 @@ const REGISTER = gql`
     }
   }
 `;
-export { REGISTER };
+
+const LOGIN = gql`
+  mutation Mutation($password: String!, $username: String!) {
+    login(password: $password, username: $username) {
+      profileURL
+      username
+      token
+      email
+      id
+    }
+  }
+`;
+export { REGISTER, LOGIN };
