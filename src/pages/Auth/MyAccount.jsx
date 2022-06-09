@@ -1,15 +1,17 @@
 import { MDBCol, MDBIcon } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
+import { useGlobalAlertContext } from "../../contexts/alertContext";
 import { useGlobalUserContext } from "../../contexts/userContext";
 const MyAccount = () => {
   let navigate = useNavigate();
   let { user, setUser } = useGlobalUserContext();
-
+  let { setShowAlert } = useGlobalAlertContext();
   //logout
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
     navigate("/");
+    setShowAlert({ msg: "Logout successful", color: "warning" });
   };
   return (
     <div className="vh-100 d-flex align-items-center justify-content-center">

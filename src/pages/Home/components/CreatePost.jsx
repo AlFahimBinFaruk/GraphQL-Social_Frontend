@@ -12,6 +12,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useState } from "react";
 import { CREATE_POST } from "../../../mutations/postMutations";
+import {GET_POSTS} from "../../../queries/postQueries"
 import { useMutation } from "@apollo/client";
 import { useGlobalAlertContext } from "../../../contexts/alertContext";
 import { useGlobalUserContext } from "../../../contexts/userContext";
@@ -26,7 +27,29 @@ const CreatePost = () => {
   //create post
   const [createPost, { loading }] = useMutation(CREATE_POST, {
     variables: { body },
-    update() {
+    update(proxy,{data:{createPost}}) {
+      let newPost={
+        ...createPost,
+        user
+      }
+        //read query
+        const data = proxy.readQuery({
+          query: GET_POSTS,
+          variables: { pageNo: "1" },
+        });
+        //write query
+        proxy.writeQuery({
+          query: GET_POSTS,
+          variables: { pageNo: "1" },
+          data: {
+            getPosts: {
+              posts: [newPost,...data.getPosts.posts],
+              totalPostCount: data.getPosts.totalPostCount,
+              __typename: data.getPosts.__typename,
+            },
+          },
+        });
+        
       reset();
       setBasicModal(false);
       setShowAlert({ msg: "Post added", color: "success" });

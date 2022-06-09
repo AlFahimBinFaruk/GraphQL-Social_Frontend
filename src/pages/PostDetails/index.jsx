@@ -1,37 +1,48 @@
-import {
-  MDBBtn,
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBIcon,
-  MDBInput,
-  MDBRow,
-} from "mdb-react-ui-kit";
-import { useState } from "react";
+import { MDBCard, MDBCardBody, MDBCol, MDBRow } from "mdb-react-ui-kit";
+import { useEffect } from "react";
 import SingleCommentCard from "./components/SingleCommentCard";
-
+import { useGlobalUserContext } from "../../contexts/userContext";
+import { useQuery } from "@apollo/client";
+import { GET_POST } from "../../queries/postQueries";
+import HandleDeletePost from "../../utils/HandleDeletePost";
+import { useParams } from "react-router-dom";
+import LoadingSpinner from "../../common_components/LoadingSpinner";
+import moment from "moment";
+import LikeBtn from "../../utils/LikeBtn";
+import EnterComment from "../../utils/EnterComment";
 const PostDetails = () => {
-  const [count, setcount] = useState([1, 2, 3, 4, 56, 4]);
+  let { id } = useParams();
+  let { user } = useGlobalUserContext();
+  const { loading, error, data, refetch } = useQuery(GET_POST, {
+    variables: { postId: id },
+  });
+  useEffect(() => {
+    if (id) {
+      refetch();
+    }
+  }, [id]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  if (error) {
+    return <h3>{error}</h3>;
+  }
   return (
     <MDBCol size="12" xl="8" className="mx-auto post-deatails">
       {/* post info */}
       <MDBCard className="post-info shadow">
         <MDBCardBody>
           {/* delete btn */}
-          <MDBIcon
-            fas
-            icon="trash"
-            className="position-absolute top-0 end-0 p-4"
-            role="button"
-            size="sm"
-          />
+          {user?.id === data?.getPost.user?.id && (
+            <HandleDeletePost postId={id} redirectToHome />
+          )}
           {/* post-user-info */}
           <div className="post-user-info d-flex align-items-start">
             {/* profile pic */}
             <img
-              src="https://mdbootstrap.com/img/new/standard/nature/182.webp"
+              src={data?.getPost?.user?.profileURL}
               alt=""
-              srcset=""
               width={40}
               height={40}
               className="rounded-circle me-2"
@@ -39,56 +50,41 @@ const PostDetails = () => {
             <div>
               {/* name */}
               <p className="mb-0 fw-bold text-muted">
-                <small>John Doe</small>
+                <small>{data?.getPost?.user?.username}</small>
               </p>
               {/* time */}
               <span>
-                <small>2 hours ago</small>
+                <small>
+                  {moment(Number(data?.getPost?.createdAt)).fromNow(true)}
+                </small>
               </span>
             </div>
           </div>
           {/* post info */}
-          <h6 className="post-info text-dark mt-3">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem,
-            recusandae, totam dolorum non nihil nostrum cupiditate, perspiciatis
-            aspernatur ullam repellendus dolor iste consectetur. Fugit
-            consequatur adipisci incidunt dolorem nulla? Ut ab sed dolores.
-          </h6>
+          <h6 className="post-info text-dark mt-3">{data?.getPost?.body}</h6>
           {/* like comment manage btns */}
           <div className="d-flex justify-content-between mt-5">
             {/* like */}
             <div className="like text-center">
-              {/* like count */}
-              <p className="mb-1 fw-bold">
-                <small>6 Likes</small>
-              </p>
-              {/* manage like btn */}
-              <MDBBtn floating color="black">
-                <MDBIcon fas icon="thumbs-up" />
-              </MDBBtn>
+              {/* like btn */}
+              <LikeBtn
+                id={data?.getPost.id}
+                likeCount={data?.getPost.likeCount}
+                likes={data?.getPost.likes}
+              />
             </div>
             {/* comment */}
             <div className="comment text-center">
               {/* comment count */}
               <p className="mb-1 fw-bold">
-                <small>0 comments</small>
+                <small>{data?.getPost.commentCount} comments</small>
               </p>
             </div>
           </div>
           {/* write a comment */}
           <div className="mt-4">
-            <MDBRow>
-              <MDBCol size="11">
-                {/* comment input */}
-                <MDBInput type="text" label="Write a comment" />
-              </MDBCol>
-              <MDBCol size="1">
-                {/* comment send btn */}
-                <MDBBtn floating>
-                  <MDBIcon far icon="paper-plane" />
-                </MDBBtn>
-              </MDBCol>
-            </MDBRow>
+            {/* enter comment */}
+            <EnterComment id={data?.getPost.id} />
           </div>
         </MDBCardBody>
       </MDBCard>
@@ -99,13 +95,17 @@ const PostDetails = () => {
         </p>
         {/* comment list */}
         <MDBRow className="gy-4">
-          {count.map((i, index) => {
-            return (
-              <MDBCol size="12">
-                <SingleCommentCard />
-              </MDBCol>
-            );
-          })}
+          {data?.getPost?.comments.length > 0 ? (
+            data?.getPost?.comments.map((i, index) => {
+              return (
+                <MDBCol size="12" key={index}>
+                  <SingleCommentCard postId={data?.getPost.id} {...i} />
+                </MDBCol>
+              );
+            })
+          ) : (
+            <p className="text-center text-danger fw-bold">No comments</p>
+          )}
         </MDBRow>
       </div>
     </MDBCol>

@@ -1,32 +1,34 @@
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import moment from "moment";
+import { useGlobalUserContext } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
+import { useGlobalAlertContext } from "../contexts/alertContext";
+import HandleDeletePost from "../utils/HandleDeletePost";
+import LikeBtn from "../utils/LikeBtn";
 const SinglePostCard = ({
   id,
   body,
   user,
+  likes,
   likeCount,
   commentCount,
   createdAt,
 }) => {
   let navigate = useNavigate();
+  let { setShowAlert } = useGlobalAlertContext();
+  // point user to loggedInUser as user is alredy there
+  let { user: loggedInUser } = useGlobalUserContext();
   return (
     <MDBCard className="h-100 shadow">
       <MDBCardBody>
         {/* delete btn */}
-        <MDBIcon
-          fas
-          icon="trash"
-          className="position-absolute top-0 end-0 p-4"
-          role="button"
-        />
+        {user?.id === loggedInUser?.id && <HandleDeletePost postId={id} />}
         {/* post-user-info */}
         <div className="post-user-info d-flex align-items-start">
           {/* profile pic */}
           <img
             src={user?.profileURL}
             alt=""
-            srcset=""
             width={40}
             height={40}
             className="rounded-circle me-2"
@@ -54,14 +56,8 @@ const SinglePostCard = ({
         <div className="d-flex justify-content-between mt-5">
           {/* like */}
           <div className="like text-center">
-            {/* like count */}
-            <p className="mb-1 fw-bold">
-              <small>{likeCount} Likes</small>
-            </p>
-            {/* manage like btn */}
-            <MDBBtn floating color="black">
-              <MDBIcon fas icon="thumbs-up" />
-            </MDBBtn>
+            {/* like btn */}
+            <LikeBtn id={id} likeCount={likeCount} likes={likes} />
           </div>
           {/* comment */}
           <div className="comment text-center">

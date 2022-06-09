@@ -44,7 +44,6 @@ const PostFeed = () => {
         <ul className="pagination mb-0">
           <MDBPaginationItem>
             <MDBPaginationLink
-              href="#"
               aria-label="Previous"
               onClick={() => setPageNo(pageNo - 1)}
             >
@@ -58,14 +57,13 @@ const PostFeed = () => {
                 key={index}
                 onClick={() => setPageNo(index + 1)}
               >
-                <MDBPaginationLink href="#">{index + 1}</MDBPaginationLink>
+                <MDBPaginationLink>{index + 1}</MDBPaginationLink>
               </MDBPaginationItem>
             )
           )}
 
           <MDBPaginationItem>
             <MDBPaginationLink
-              href="#"
               aria-label="Next"
               onClick={() => setPageNo(pageNo + 1)}
             >

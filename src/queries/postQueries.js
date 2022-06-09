@@ -1,21 +1,52 @@
 import { gql } from "@apollo/client";
 const GET_POSTS = gql`
   query GetPosts($pageNo: String) {
-  getPosts(pageNo: $pageNo) {
-    posts {
+    getPosts(pageNo: $pageNo) {
+      posts {
+        body
+        likeCount
+        commentCount
+        createdAt
+        id
+        likes {
+          id
+          username
+        }
+        user {
+          id
+          username
+          profileURL
+        }
+      }
+      totalPostCount
+    }
+  }
+`;
+
+const GET_POST = gql`
+  query GetPost($postId: ID!) {
+    getPost(postId: $postId) {
+      id
       body
+      comments {
+        body
+        username
+        id
+        createdAt
+      }
+      likes {
+        username
+        id
+      }
       likeCount
       commentCount
       createdAt
-      id
       user {
-        id
-        username
         profileURL
+        username
+        id
       }
     }
-    totalPostCount
   }
-}
 `;
-export { GET_POSTS };
+export { GET_POSTS, GET_POST };
