@@ -16,7 +16,7 @@ import { AppAlertProvider } from "./contexts/alertContext";
 import { UserAuthProvider } from "./contexts/userContext";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000/graphql",
+  uri: process.env.REACT_APP_API_URL,
 });
 
 const authLink = setContext(() => {
