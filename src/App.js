@@ -55,11 +55,11 @@ function App() {
                 </IsLoggedIn>
               }
             />
+            <Route
+              path="*"
+              element={<h5 className="text-center my-5">Page Not Found!!</h5>}
+            />
           </Routes>
-          <Route
-            path="*"
-            element={<h5 className="text-center my-5">Page Not Found!!</h5>}
-          />
         </MDBContainer>
       </BrowserRouter>
 
