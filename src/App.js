@@ -56,6 +56,10 @@ function App() {
               }
             />
           </Routes>
+          <Route
+            path="*"
+            element={<h5 className="text-center my-5">Page Not Found!!</h5>}
+          />
         </MDBContainer>
       </BrowserRouter>
 
